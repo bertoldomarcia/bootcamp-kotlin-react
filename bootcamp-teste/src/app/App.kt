@@ -12,16 +12,13 @@ interface State: RState {
 class App : RComponent<RProps, State>() {
 
     init {
-        state.todos = listOf(
-            Todo(title = "Teste 1"),
-            Todo(title = "Teste 2")
-        )
+        state.todos = loadTodos()
     }
 
     fun loadTodos(): List<Todo> {
         return listOf (
-            Todo(title = "Teste 1"),
-            Todo(title = "Teste 2")
+//            Todo(title = "Teste 1"),
+//            Todo(title = "Teste 2")
         )
     }
 
@@ -39,12 +36,26 @@ class App : RComponent<RProps, State>() {
         }
     }
 
+    fun updateTodo(todo: Todo) {
+        val newTodos = state.todos.map { oldTodo ->
+            if (todo.id == oldTodo.id) {
+                todo
+            } else {
+                oldTodo
+            }
+        }
+
+        setState {
+            todos = newTodos
+        }
+    }
+
     override fun RBuilder.render() {
         section("todoapp") {
             headerInput(::createTodo)
 
             section ("main") {
-                todoList(state.todos, ::removeTodo)
+                todoList(state.todos, ::removeTodo, ::updateTodo)
             }
 
 

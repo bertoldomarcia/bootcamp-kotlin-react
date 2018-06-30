@@ -39,13 +39,30 @@ class App : RComponent<RProps, App.State>() {
             }
         }
 
+//        div {
+//            span {
+//                +state.inputValue
+//            }
+//        }
+        test(state.inputValue)
+    }
+}
+fun RBuilder.app() = child(App::class) {}
+
+
+class Test : RComponent<Test.Props, RState>() {
+    class Props(var value: String) : RProps
+    override fun RBuilder.render() {
         div {
             span {
-                +state.inputValue
+                +props.value
             }
         }
-
     }
 }
 
-fun RBuilder.app() = child(App::class) {}
+fun RBuilder.test(value: String) = child(Test::class){
+    attrs.value = value
+}
+
+

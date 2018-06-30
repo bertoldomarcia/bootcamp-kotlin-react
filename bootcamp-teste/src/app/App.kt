@@ -18,9 +18,23 @@ class App : RComponent<RProps, State>() {
         )
     }
 
+    fun loadTodos(): List<Todo> {
+        return listOf (
+            Todo(title = "Teste 1"),
+            Todo(title = "Teste 2")
+        )
+    }
+
+    fun createTodo(todo: Todo) {
+        val oldTodos = state.todos
+        setState {
+            todos = oldTodos + todo
+        }
+    }
+
     override fun RBuilder.render() {
         section("todoapp") {
-            headerInput()
+            headerInput(::createTodo)
 
             section ("main") {
                 todoList(state.todos)

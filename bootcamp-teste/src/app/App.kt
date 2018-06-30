@@ -1,68 +1,38 @@
 package app
 
-import kotlinx.html.js.onChangeFunction
+import model.Todo
 import react.*
 import react.dom.*
-import logo.*
-import ticker.*
 
-class App : RComponent<RProps, App.State>() {
+interface State: RState {
+    var todos: List<Todo>
+}
 
-    class State(var inputValue: String) : RState
 
-    override fun componentWillMount() {
-        setState {
-            state.inputValue = "Input your name"
-        }
+class App : RComponent<RProps, State>() {
+
+    init {
+        state.todos = listOf(
+            Todo(title = "Teste 1"),
+            Todo(title = "Teste 2")
+        )
     }
 
-
     override fun RBuilder.render() {
+        section("todoapp") {
+            headerInput()
 
-        h1 {
-            +"Hello Bootcamp"
-        }
-
-
-        div("App-header") {
-            input {
-                attrs {
-                    value = state.inputValue
-                    onChangeFunction =  { event ->
-                        val value = event.currentTarget.asDynamic().value
-                        setState {
-                            inputValue = value
-                        }
-
-                    }
-                }
+            section ("main") {
+                todoList(state.todos)
             }
+
+
         }
 
-//        div {
-//            span {
-//                +state.inputValue
-//            }
-//        }
-        test(state.inputValue)
     }
 }
 fun RBuilder.app() = child(App::class) {}
 
 
-class Test : RComponent<Test.Props, RState>() {
-    class Props(var value: String) : RProps
-    override fun RBuilder.render() {
-        div {
-            span {
-                +props.value
-            }
-        }
-    }
-}
-
-fun RBuilder.test(value: String) = child(Test::class){
-    attrs.value = value
-}
 
 

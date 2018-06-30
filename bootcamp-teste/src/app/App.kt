@@ -32,12 +32,19 @@ class App : RComponent<RProps, State>() {
         }
     }
 
+    fun removeTodo(todo: Todo) {
+        val oldTodos = state.todos
+        setState {
+            todos = oldTodos - todo
+        }
+    }
+
     override fun RBuilder.render() {
         section("todoapp") {
             headerInput(::createTodo)
 
             section ("main") {
-                todoList(state.todos)
+                todoList(state.todos, ::removeTodo)
             }
 
 

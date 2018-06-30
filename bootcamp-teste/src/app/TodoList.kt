@@ -6,6 +6,7 @@ import react.dom.*
 
 interface Props: RProps {
     var todos: List<Todo>
+    var removeTodo: (Todo) -> Unit
 }
 
 
@@ -15,17 +16,14 @@ class TodoList : RComponent<Props, RState>() {
         ul(classes = "todo-list") {
             props.todos.mapIndexed({ index, todo ->
                 li {
-                    div ("view") {
-                        label {
-                            +todo.title
-                        }
-                    }
+                    todoItem(todo, props.removeTodo)
                 }
             })
         }
     }
 }
 
-fun RBuilder.todoList(todos: List<Todo>) = child(TodoList::class) {
+fun RBuilder.todoList(todos: List<Todo>, removeTodo: (Todo) -> Unit) = child(TodoList::class) {
     attrs.todos = todos
+    attrs.removeTodo = removeTodo
 }
